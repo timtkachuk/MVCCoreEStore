@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ProductComment>
+<li class="nav-item dropdown">
+    <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="fas fa-comments"></i>
+        <span class="badge badge-danger navbar-badge">@Model.Count()</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        @foreach (var productComment in Model.OrderByDescending(p => p.Date).Take(10))
+        {
+            <a asp-controller="Products" asp-action="ProductComments" class="dropdown-item">
+                <div class="media">
+                    <div class="media-body">
+                        <h3 class="dropdown-item-title">
+                            @productComment.User.Name
+                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                        </h3>
+                        <p class="text-sm">@productComment.Text.PadRight(25,' ').Substring(0,25)</p>
+                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @productComment.Date.ToShortDateString() - @productComment.Date.ToShortTimeString()</p>
+                    </div>
+                </div>
+            </a>
+        }
+
+        <div class="dropdown-divider"></div>
+        <a asp-controller="Products" asp-action="ProductComments" class="dropdown-item dropdown-footer">Tüm Ürün Yorumları</a>
+    </div>
+</li>

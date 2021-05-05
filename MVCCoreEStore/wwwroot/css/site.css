@@ -1,0 +1,51 @@
+﻿
+.validation-summary-errors ul {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+    .validation-summary-errors,
+    .validation-summary-errors ul,
+    .validation-summary-errors ul li
+    {
+        display: inline;
+    }
+
+p {
+    text-indent: 40px;
+}
+
+.shopping-cart-badge {
+    position: relative;
+    left: -10px;
+    top: -7px!important;
+    border: 2px solid #fff;
+}
+
+.product-name {
+    height: 50px;
+    overflow: hidden;
+}
+
+.thumbnail-image {
+    cursor: pointer;
+}
+
+.product-image {
+    opacity: 0;
+    transition: .3s all linear;
+}
+
+.product-image.active {
+    opacity: 1;
+}
+
+.comment-star{
+    cursor: pointer;
+}
+
+.comment-blockquote{
+    border-left: 6px solid #ccc;
+    font-size: 1rem;
+}

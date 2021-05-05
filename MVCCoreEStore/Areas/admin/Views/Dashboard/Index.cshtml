@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<h2>Hoşgeldiniz...</h2>
+<div class="row row-cols-4">
+    <div class="col-12 col-md-3">
+        <div class="alert alert-info">
+            <div class="d-flex align-items-center">
+                <div class="p-2">
+                    <i class="fa fa-3x fa-comment-alt"></i>
+                </div>
+                <div class="p-2 flex-fill">
+                    <div class="h4">Yeni Yorumlar</div>
+                    <div class="h1 p-2">@ViewBag.Comments.Count</div>
+                    <div class="h4 p-2">Adet</div>
+                    <div class="text-right">
+                        <a asp-controller="Products" asp-action="ProductComments">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

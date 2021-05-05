@@ -1,0 +1,40 @@
+﻿@model Product
+<div class="col col-md-3 mb-4">
+    <div class="card text-white bg-dark mb-3">
+        <img src="@Model.Picture" class="card-img-top" alt="@Model.Name">
+        <div class="card-body">
+            <h5 class="card-title text-truncate">@Model.Name</h5>
+            <div class="d-flex">
+                @if (Model.Discount == 0)
+                {
+                    <div class="flex-fill p-1">
+                        <div><b>@Model.DiscountedPrice.ToString("c2")</b></div>
+                    </div>
+                    <div class="col-4 px-1 py-1 h5">
+                        &nbsp;
+                    </div>
+                }
+                else
+                {
+                    <div class="col-4 bg-danger text-white px-1 py-3 text-center h5">
+                        <b>%@Model.Discount.ToString()</b>
+                    </div>
+                    <div class="flex-fill p-1">
+                        <div class="small text-secondary line" style="text-decoration: line-through"><b>@Model.Price.ToString("c2")</b></div>
+                        <div><b>@Model.DiscountedPrice.ToString("c2")</b></div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-sm btn-success mr-2" asp-controller="Home" asp-action="AddToCart" asp-route-id="@Model.Id">
+                <i class="fa fa-shopping-bag"></i>
+                Sepete Ekle
+            </a>
+            <a class="btn btn-sm btn-primary" asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrl()">
+                <i class="fa fa-search"></i>
+                İncele
+            </a>
+        </div>
+    </div>
+</div>
