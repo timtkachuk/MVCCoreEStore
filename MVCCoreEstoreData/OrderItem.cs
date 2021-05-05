@@ -32,7 +32,7 @@ namespace MVCCoreEStoreData
             {
                 entity
                 .Property(p => p.Price)
-                .HasColumnType("money");
+                .HasPrecision(18,4);
 
             });
         }

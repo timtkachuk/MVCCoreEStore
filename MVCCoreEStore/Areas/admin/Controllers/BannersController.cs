@@ -40,11 +40,15 @@ namespace MVCCoreEStore.Areas.admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Banner model)
         {
-            using (var logo = await Image.LoadAsync(model.ImageFile.OpenReadStream()))
+            if (model.ImageFile != null)
             {
-                logo.Mutate(p => p.Resize(960, 340));
-                model.Image = logo.ToBase64String(JpegFormat.Instance);
+                using (var logo = await Image.LoadAsync(model.ImageFile.OpenReadStream()))
+                {
+                    logo.Mutate(p => p.Resize(960, 340));
+                    model.Image = logo.ToBase64String(JpegFormat.Instance);
+                }
             }
+
 
             model.Date = DateTime.Now;
             model.UserId = (await userManager.FindByNameAsync(HttpContext.User.Identity.Name)).Id;

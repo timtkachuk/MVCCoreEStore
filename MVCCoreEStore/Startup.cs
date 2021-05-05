@@ -29,7 +29,29 @@ namespace MVCCoreEStore
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                switch (Configuration.GetValue<string>("Application:DbType"))
+                {
+                    //case "MySql":
+                    //    options.UseMySql(
+                    //        Configuration.GetConnectionString("MySql"), 
+                    //        ServerVersion.Autodetect(Configuration.GetConnectionString("MySql")),
+                    //        x => x.MigrationsAssembly("MigrationsMySql"));
+                    //    break;
+                    //case "Oracle":
+                    //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                    //    break;
+                    //case "Postgres":
+                    //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                    //    break;
+                    case "SqlServer":
+                    default:
+                        options.UseSqlServer(
+                            Configuration.GetConnectionString("SqlServer"),
+                            x => x.MigrationsAssembly("MigrationsSqlServer")
+                            );
+                        break;
+                }
+
                 options.UseLazyLoadingProxies();
             });
 
@@ -91,7 +113,7 @@ namespace MVCCoreEStore
                 endpoints.MapControllerRoute(
                     name: "product",
                     pattern: "p/{id}/{name}.html",
-                    defaults: new { controller="Home", action="Product"}
+                    defaults: new { controller = "Home", action = "Product" }
                 );
 
                 endpoints.MapControllerRoute(

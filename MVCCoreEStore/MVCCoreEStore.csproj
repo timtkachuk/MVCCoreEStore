@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MigrationsMySql\MigrationsMySql.csproj" />
+    <ProjectReference Include="..\MigrationsSqlServer\MigrationsSqlServer.csproj" />
     <ProjectReference Include="..\MVCCoreEstoreData\MVCCoreEstoreData.csproj" />
   </ItemGroup>
 

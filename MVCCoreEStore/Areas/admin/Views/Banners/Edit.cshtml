@@ -1,9 +1,8 @@
 ﻿@model Banner
 @{
-    var name = "Tanırım Görseli";
+    var name = "Tanıtım Görseli";
     ViewData["Title"] = $"{name} Güncelleme";
 }
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <div class="card card-outline card-success">
     <div class="card-header">
@@ -16,7 +15,9 @@
         </div>
     </div>
     <div class="card-body">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Image" />
+            <input type="hidden" asp-for="Date" />
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -103,12 +104,11 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 
     <script>
         $(() => {
-
-            $('#DateStart').datepicker($.datepicker.regional["tr"]);
-            $('#DateEnd').datepicker($.datepicker.regional["tr"]);
 
             $('#customfile').change(function () {
                 var reader = new FileReader();
@@ -117,6 +117,10 @@
                 };
                 reader.readAsDataURL(this.files[0]);
             });
+
+            $('#DateStart').datepicker($.datepicker.regional["tr"]);
+            $('#DateEnd').datepicker($.datepicker.regional["tr"]);
+
 
             $.datepicker.regional['tr'] = {
                 closeText: 'kapat',
