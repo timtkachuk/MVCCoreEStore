@@ -1,0 +1,23 @@
+﻿@model User
+
+@if (Model == null)
+{
+    <li class="nav-item">
+        <a href="#" class="btn btn-link text-success text-decoration-none">Yeni Üyelik</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Account" asp-action="Login" class="btn btn-link text-success text-decoration-none">Üye Girişi</a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <span class="navbar-text">Hoş geldiniz Sn. @Model.Name</span>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="btn btn-link text-success text-decoration-none">Hesabım</a>
+    </li>
+    <li class="nav-item">
+        <a asp-controller="Account" asp-action="Logout" class="btn btn-link text-success text-decoration-none">Çıkış</a>
+    </li>
+}

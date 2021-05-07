@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCCoreEStore.Services;
 using MVCCoreEStoreData;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -25,6 +26,16 @@ namespace MVCCoreEStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews();
 
             services.AddDbContext<AppDbContext>(options =>
@@ -91,6 +102,8 @@ namespace MVCCoreEStore
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             var cultures = new List<CultureInfo>
             {

@@ -6,15 +6,83 @@
     <div class="col-12 col-md-3">
         <div class="alert alert-info">
             <div class="d-flex align-items-center">
-                <div class="p-2">
+                <div class="pr-2">
                     <i class="fa fa-3x fa-comment-alt"></i>
                 </div>
-                <div class="p-2 flex-fill">
-                    <div class="h4">Yeni Yorumlar</div>
-                    <div class="h1 p-2">@ViewBag.Comments.Count</div>
-                    <div class="h4 p-2">Adet</div>
+                <div class="flex-fill">
+                    <div>Yeni yorumlar</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.CommentsCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
                     <div class="text-right">
-                        <a asp-controller="Products" asp-action="ProductComments">
+                        <a asp-controller="Products" asp-action="ProductComments" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="alert alert-warning text-white">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-users"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Üyeler</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.UsersCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="alert alert-secondary text-white">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-shopping-cart"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Yeni Siparişler</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.OrdersCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="alert alert-danger text-white">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-eye"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Ürün Görüntüleme</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.ReviewsCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
                             Tümü
                             <i class="fa fa-caret-right"></i>
                         </a>

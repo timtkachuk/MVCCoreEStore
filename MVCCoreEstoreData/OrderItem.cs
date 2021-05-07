@@ -26,6 +26,8 @@ namespace MVCCoreEStoreData
 
         public virtual Product Product { get; set; }
 
+        public virtual Order Order { get; set; }
+
         public override void Build(ModelBuilder builder)
         {
             builder.Entity<OrderItem>(entity =>

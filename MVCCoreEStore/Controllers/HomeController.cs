@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,9 @@ using Microsoft.Extensions.Logging;
 using MVCCoreEStore.Models;
 using MVCCoreEStore.Services;
 using MVCCoreEStoreData;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -58,7 +61,39 @@ namespace MVCCoreEStore.Controllers
 
         public async Task<IActionResult> Product(int id)
         {
+            if (id == 0)
+            {
+                return default;
+            }
             var product = await context.Products.FindAsync(id);
+
+            var oldJson = HttpContext.Session.GetString("productReviews");
+            //var viewedProducts = oldJson == null ? new List<int>() : JsonConvert.DeserializeObject<List<int>>(oldJson);
+            var viewedProducts = JsonConvert.DeserializeObject<List<int>>(oldJson ?? "[]");
+
+            if (!viewedProducts.Any(p => p == id))
+            {
+                viewedProducts.Add(id);
+
+                var json = JsonConvert.SerializeObject(viewedProducts);
+                HttpContext.Session.SetString("productReviews", json);
+
+                product.Reviews++;
+                context.Entry(product).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+
+            var carousel = product.ProductPictures.Select(p => p.Picture).ToList();
+            carousel.Insert(0, product.Picture);
+            ViewBag.Carousel = carousel;
+
+            ViewBag.CanAddComment = false;
+            if (User.Identity.Name != null)
+            {
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
+                ViewBag.CanAddComment = context.OrderItems.Any(p => p.ProductId == id && p.Order.User.Id == user.Id);
+            }
+
             return View(product);
         }
 

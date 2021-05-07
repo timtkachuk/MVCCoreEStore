@@ -18,7 +18,10 @@ namespace MVCCoreEStore.Areas.admin.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Comments = context.ProductComments.Where(p => !p.Enabled).ToList();
+            ViewBag.CommentsCount = context.ProductComments.Where(p => !p.Enabled).Count();
+            ViewBag.UsersCount = context.Users.Count();
+            ViewBag.OrdersCount = context.Orders.Where(p => !p.Enabled && p.OrderState == OrderStates.New).Count();
+            ViewBag.ReviewsCount = context.Products.Sum(p => p.Reviews);
             return View();
         }
     }

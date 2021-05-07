@@ -10,7 +10,7 @@
         <label asp-for="Score"></label>
         <input type="hidden" asp-for="Score" id="commentScore" value=""/>
         <div class="star-group">            
-                <partial name="Star" model="Model.Score" />            
+                <partial name="Star" model="(float)Model.Score" />            
         </div>
         <span asp-validation-for="Score"></span>
     </div>

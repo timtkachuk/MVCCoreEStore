@@ -28,6 +28,14 @@
         </div>
     </div>
     <div class="col-12 col-md-6">
+        @if (Model.ProductComments.Where(p => p.Enabled).Count() > 0)
+        {
+            <div class="h5 text-right">
+                <partial name="Star" model="@((Model.ProductComments.Where(p => p.Enabled).Sum(p => p.Score)/
+                (float)Model.ProductComments.Where(p => p.Enabled).Count()))" />
+            </div>
+        }
+
         <div class="h5">
             @Model.Name
         </div>
@@ -56,6 +64,9 @@
             <img src="~/content/images/Kargobedava.png" />
         }
         <partial name="AddToCartButton" model="new AddToCartViewModel { Quantity = 1, ProductId = Model.Id }" />
+        <div class="text-info">
+            <i class=" fa fa-fw fa-eye"></i>Görüntülenme : @Model.Reviews.ToString("n0")
+        </div>
     </div>
 </div>
 <ul class="nav nav-pills mb-3" id="productTab" role="tablist">
@@ -71,13 +82,21 @@
         @Html.Raw(Model.Descriptions)
     </div>
     <div class="tab-pane fade" id="comments" role="tabpanel">
-        <partial name="CommentForm" model="new ProductComment { Score=0, ProductId = Model.Id }" />
+        @if (ViewBag.CanAddComment)
+        {
+            <partial name="CommentForm" model="new ProductComment { Score=0, ProductId = Model.Id }" />
+        }
+        else
+        {
+            <div class="text-danger">Yorum yapabilmek için bu ürünü satın almış olmanız gerekmektedir...</div>
+        }
+
         <hr />
         @foreach (var productComment in Model.ProductComments.Where(p => p.Enabled || p.UserId == 3).OrderByDescending(p => p.Date))
         {
             <blockquote class="comment-blockquote blockquote p-2">
                 <div class="text-right p-2">
-                    <partial name="Star" model="productComment.Score" />
+                    <partial name="Star" model="(float)productComment.Score" />
                 </div>
                 <p class="mb-0">@productComment.Text</p>
                 <footer class="blockquote-footer">@productComment.User.Name - @productComment.Date.ToShortDateString() @productComment.Date.ToShortTimeString()</footer>
@@ -111,8 +130,8 @@
 
             $('#quantityDecrease').click((e) => {
                 var v = $('Quantity').val();
-                if (v > 1) 
-                $('Quantity').val(--v);
+                if (v > 1)
+                    $('Quantity').val(--v);
             });
 
             $('#quantityIncrease').click((e) => {
