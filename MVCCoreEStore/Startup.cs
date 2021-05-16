@@ -77,6 +77,7 @@ namespace MVCCoreEStore
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IMailMessageService, MailMessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,6 +10,29 @@
 </head>
 <body>
     <header>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container">
+                <ul class="navbar-nav">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin</a>
+                    </li>
+                </ul>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav ml-auto">
+                        @await Component.InvokeAsync("UserBar")
+                        <li class="nav-item">
+                            <a href="#" class="btn btn-outline-success">Sepetim<i class="fa fa-shopping-bag"></i> <span class="badge badge-success badge-pill shopping-cart-badge">0</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -21,12 +44,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav">
-                        <li>
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Admin</a>
-                        </li>
-                    </ul>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">                    
                     <form class="my-2 my-lg-0 flex-grow-1" method="get" asp-controller="Home" asp-action="Search">
                         <div class="input-group">
                             <input class="form-control" type="search" placeholder="Ara" name="Keywords">
@@ -35,12 +53,6 @@
                             </div>
                         </div>
                     </form>
-                    <ul class="navbar-nav">
-                        @await Component.InvokeAsync("UserBar")
-                        <li class="nav-item">
-                            <a href="#" class="btn btn-outline-success">Sepetim<i class="fa fa-shopping-bag"></i> <span class="badge badge-success badge-pill shopping-cart-badge">0</span></a>
-                        </li>
-                    </ul>                    
                 </div>
             </div>
         </nav>

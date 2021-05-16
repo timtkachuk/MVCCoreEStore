@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,10 @@ namespace MVCCoreEStoreData
 {
     public enum Genders
     {
-        Male, Female
+        [Display(Name = "Erkek")]
+        Male, 
+        [Display(Name = "Kadın")]
+        Female
     }
 
     public class User : IdentityUser<int>

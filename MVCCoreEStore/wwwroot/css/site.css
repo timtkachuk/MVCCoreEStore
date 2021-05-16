@@ -5,13 +5,6 @@
     padding-left: 0;
 }
 
-    .validation-summary-errors,
-    .validation-summary-errors ul,
-    .validation-summary-errors ul li
-    {
-        display: inline;
-    }
-
 p {
     text-indent: 40px;
 }
