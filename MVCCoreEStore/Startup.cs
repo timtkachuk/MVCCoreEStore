@@ -73,8 +73,15 @@ namespace MVCCoreEStore
                 options.Password.RequireLowercase = Configuration.GetValue<bool>("Security:PasswordPolicy:RequireLowercase");
                 options.Password.RequireNonAlphanumeric = Configuration.GetValue<bool>("Security:PasswordPolicy:RequireNonAlphanumeric");
                 options.Password.RequireUppercase = Configuration.GetValue<bool>("Security:PasswordPolicy:RequireUppercase");
+
+                options.SignIn.RequireConfirmedEmail = Configuration.GetValue<bool>("Security:PasswordPolicy:RequireConfirmedEmail");
+
+                //options.Lockout.AllowedForNewUsers = false;
+                //options.Lockout.MaxFailedAccessAttempts = 5;
+                //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             })
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddTransient<IMailMessageService, MailMessageService>();

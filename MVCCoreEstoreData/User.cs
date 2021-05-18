@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,16 @@ namespace MVCCoreEStoreData
         public string Name { get; set; }
         public Genders? Gender { get; set; }
         public DateTime? DateOfBirth { get; set; }
+
+        [NotMapped]
+        public decimal ShoppingCartGrandTotal => ShoppingcartItems.Sum(p => p.Amount);
+
+        [NotMapped]
+        public decimal ShoppingCartTotal => ShoppingcartItems.Sum(p => p.Quantity * p.Product.Price);
+
+        [NotMapped]
+        public decimal ShoppingCartSavings => ShoppingCartTotal - ShoppingCartGrandTotal;
+
         public virtual ICollection<Rayon> Rayons { get; set; } = new HashSet<Rayon>();
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\content\ResetPasswordTemplate.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
@@ -21,6 +25,11 @@
 
   <ItemGroup>
     <Folder Include="Areas\admin\Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\content\ResetPasswordTemplate.html" />
+    <None Include="wwwroot\content\EMailConfirmationTemplate.html" />
   </ItemGroup>
 
   <ItemGroup>

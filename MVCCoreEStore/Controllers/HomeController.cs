@@ -99,26 +99,8 @@ namespace MVCCoreEStore.Controllers
 
         public async Task<IActionResult> AddToCart(AddToCartViewModel model)
         {
-            if (!signInManager.IsSignedIn(User))
-            {
-                shoppingCartService.AddToCart(model.ProductId, model.Quantity);
-            }
-            else
-            {
-                var userId = int.Parse(userManager.GetUserId(User));
-                var item = await context.ShoppingCartItems.SingleOrDefaultAsync(p => p.UserId == userId && p.ProductId == model.ProductId);
-                if (item == null)
-                {
-                    item = new ShoppingCartItem { ProductId = model.ProductId, Quantity = model.Quantity, UserId = userId };
-                    context.Entry(item).State = EntityState.Added;
-                }
-                else
-                {
-                    item.Quantity += model.Quantity;
-                    context.Entry(item).State = EntityState.Modified;
-                }
-                await context.SaveChangesAsync();
-            }
+            await shoppingCartService.AddToCart(model.ProductId, model.Quantity);
+
             return Redirect("/");
         }
 

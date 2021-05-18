@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCCoreEStoreData
 {
@@ -15,9 +12,12 @@ namespace MVCCoreEStoreData
         public virtual User User { get; set; }
         public virtual Product Product { get; set; }
 
+        [NotMapped]
+        public decimal Amount => Product.DiscountedPrice * Quantity;
+
         public override void Build(ModelBuilder builder)
         {
-            
+
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVCCoreEStore.Models;
 using MVCCoreEStore.Services;
@@ -7,17 +10,31 @@ using System.Threading.Tasks;
 
 namespace MVCCoreEStore.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
         private readonly IMailMessageService mailMessageService;
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly AppDbContext context;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, IMailMessageService mailMessageService)
+        public AccountController(
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            IMailMessageService mailMessageService,
+            IWebHostEnvironment webHostEnvironment,
+            IHttpContextAccessor httpContextAccessor,
+            AppDbContext context
+            )
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.mailMessageService = mailMessageService;
+            this.webHostEnvironment = webHostEnvironment;
+            this.httpContextAccessor = httpContextAccessor;
+            this.context = context;
         }
 
         public IActionResult Login()
@@ -60,10 +77,21 @@ namespace MVCCoreEStore.Controllers
                 Gender = model.Gender
             };
             var result = await userManager.CreateAsync(newUser, model.Password);
+            await userManager.AddToRoleAsync(newUser, "Members");
 
             if (result.Succeeded)
             {
-                await mailMessageService.Send(model.UserName, "E-Posta Doğrulama Mesajı", "deneme : Link");
+                var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                var messageBody =
+                    string.Format(
+                    System.IO
+                    .File
+                    .ReadAllText(System.IO.Path.Combine(webHostEnvironment.WebRootPath, "Content", "EMailConfirmationTemplate.html"))
+                    , model.Name
+                    , Url.Action("ConfirmEmail", "Account", new { id = newUser.Id, token = emailConfirmationToken }, httpContextAccessor.HttpContext.Request.Scheme)
+                    );
+
+                await mailMessageService.Send(model.UserName, "E-Posta Doğrulama Mesajı", messageBody);
                 return View("RegisterSuccess");
             }
             else
@@ -95,6 +123,66 @@ namespace MVCCoreEStore.Controllers
                 }
                 return View(model);
             }
+        }
+        public async Task<IActionResult> ConfirmEmail(int id, string token)
+        {
+            var user = context.Users.Find(id);
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View("EMailSuccess");
+            }
+            else
+            {
+                return View("EmailFail");
+            }
+        }
+
+        public IActionResult ResetPasswordForm()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPasswordForm(ResetPasswordViewModel model)
+        {
+            var user = await userManager.FindByNameAsync(model.UserName);
+            if (user != null)
+            {
+                var passwordResetToken = await userManager.GeneratePasswordResetTokenAsync(user);
+                var messageBody =
+                    string.Format(
+                    System.IO
+                    .File.ReadAllText(System.IO.Path.Combine(webHostEnvironment.WebRootPath, "Content", "ResetPasswordTemplate.html"))
+                    , user.Name
+                    , Url.Action("ResetPassword", "Account", new { id = user.Id, token = passwordResetToken }, httpContextAccessor.HttpContext.Request.Scheme)
+                    );
+                await mailMessageService.Send(user.UserName, "Parola Yenileme Mesajı", messageBody);
+                return View("ResetPasswordFormSuccess");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Belirttiğiniz e-posta adresiyle kayıtlı üyemiz bulunmamaktadır!");
+                return View(model);
+            }
+        }
+
+        public IActionResult ResetPassword(string id, string token)
+        {
+            return View(new NewPasswordViewModel { Id = id, Token = token });
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(NewPasswordViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
+            await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            return View("ResetPasswordSuccess");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> CheckOut()
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            return View(user);
         }
     }
 }

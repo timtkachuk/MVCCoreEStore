@@ -7,7 +7,7 @@ namespace MVCCoreEStore.Services
 {
     public interface IShoppingCartService
     {
-        void AddToCart(int id, int quantity = 1);
+        Task AddToCart(int id, int quantity = 1);
 
         int ItemCount();
     }

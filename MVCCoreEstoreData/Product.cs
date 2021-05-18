@@ -19,11 +19,6 @@ namespace MVCCoreEStoreData
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz")]
         [RegularExpression("^[0-9A-Z-]{6,16}$", ErrorMessage = "Lütfen geçerli bir ürün kodu yazınız!")]
         public string Code { get; set; }
-
-        //[Display(Name = "Min. Adet")]
-        //[Range(1,10, ErrorMessage = "{0} alanı en az {1}, en çok {2} olmalıır!")]
-        //public int MinOrder { get; set; }
-
         public string Picture { get; set; }
         public decimal Price { get; set; }
 
@@ -39,6 +34,9 @@ namespace MVCCoreEStoreData
 
         [NotMapped]
         public decimal DiscountAmount { get => Price * Discount / 100m; }
+
+        [NotMapped]
+        public decimal DiscountedPrice { get => Price - DiscountAmount; }
 
         [NotMapped]
         [Display(Name = "Görsel")]
@@ -58,8 +56,6 @@ namespace MVCCoreEStoreData
         [RegularExpression(@"^[0-9]+(\,[0-9]{1,2})?$", ErrorMessage = "Lütfen geçerli bir fiyat yazınız!")]
         public string PriceText { get; set; }
 
-        [NotMapped]
-        public decimal DiscountedPrice { get => Price - DiscountAmount; }
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
         public virtual ICollection<ProductPicture> ProductPictures { get; set; } = new HashSet<ProductPicture>();
@@ -86,7 +82,7 @@ namespace MVCCoreEStoreData
 
                 entity
                    .Property(p => p.Price)
-                   .HasPrecision(18,4);
+                   .HasPrecision(18, 4);
 
 
                 entity
