@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MVCCoreEStore.Models;
 using MVCCoreEStore.Services;
 using MVCCoreEStoreData;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MVCCoreEStore.Controllers
@@ -19,6 +20,7 @@ namespace MVCCoreEStore.Controllers
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly AppDbContext context;
+        private readonly IShoppingCartService shoppingCartService;
 
         public AccountController(
             SignInManager<User> signInManager,
@@ -26,7 +28,8 @@ namespace MVCCoreEStore.Controllers
             IMailMessageService mailMessageService,
             IWebHostEnvironment webHostEnvironment,
             IHttpContextAccessor httpContextAccessor,
-            AppDbContext context
+            AppDbContext context,
+            IShoppingCartService shoppingCartService
             )
         {
             this.signInManager = signInManager;
@@ -35,6 +38,7 @@ namespace MVCCoreEStore.Controllers
             this.webHostEnvironment = webHostEnvironment;
             this.httpContextAccessor = httpContextAccessor;
             this.context = context;
+            this.shoppingCartService = shoppingCartService;
         }
 
         public IActionResult Login()
@@ -181,7 +185,12 @@ namespace MVCCoreEStore.Controllers
         [Authorize]
         public async Task<IActionResult> CheckOut()
         {
+            await shoppingCartService.TransferCookieToDatabaseAsync();
             var user = await userManager.FindByNameAsync(User.Identity.Name);
+            if (user.ShoppingCartItems.Any(p => p.Product == null))
+            {
+                return RedirectToAction("CheckOut");
+            }
             return View(user);
         }
     }

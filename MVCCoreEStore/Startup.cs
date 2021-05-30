@@ -42,12 +42,12 @@ namespace MVCCoreEStore
             {
                 switch (Configuration.GetValue<string>("Application:DbType"))
                 {
-                    //case "MySql":
-                    //    options.UseMySql(
-                    //        Configuration.GetConnectionString("MySql"), 
-                    //        ServerVersion.Autodetect(Configuration.GetConnectionString("MySql")),
-                    //        x => x.MigrationsAssembly("MigrationsMySql"));
-                    //    break;
+                    case "MySql":
+                        object p = options.UseMySql(
+                            Configuration.GetConnectionString("MySql"),
+                            ServerVersion.AutoDetect(Configuration.GetConnectionString("MySql")),
+                            x => x.MigrationsAssembly("MigrationsMySql"));
+                        break;
                     //case "Oracle":
                     //    options.UseSqlServer(Configuration.GetConnectionString("Default"));
                     //    break;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-widht" , initial-scale="1.0" />
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>@ViewData["Title"] - MVCCoreEstore</title>
     <link href="~/css/adminlte/fontawesome-free/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -25,9 +25,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav ml-auto">
                         @await Component.InvokeAsync("UserBar")
-                        <li class="nav-item">
-                            <a asp-controller="Account" asp-action="CheckOut" class="btn btn-outline-success">Sepetim<i class="fa fa-shopping-bag"></i> <span class="badge badge-success badge-pill shopping-cart-badge">0</span></a>
-                        </li>
+                        @await Component.InvokeAsync("BasketButton")
                     </ul>
                 </div>
             </div>
@@ -67,7 +65,7 @@
         </nav>
     </header>
     <div class="container bg-white border-left border-right shadow">
-        <main role="main" class="pb-3">
+        <main role="main" class="py-3">
             @RenderBody()
         </main>
         @await Component.InvokeAsync("BrandsBar")
@@ -80,7 +78,22 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)  
+    @await RenderSectionAsync("Scripts", required: false) 
+    <script>
+        $(()  => {
+            $('.quantityDecrease').click((e) => {
+                var v = $(e.currentTarget).parent().parent().find('input').val();
+                if (v > 1)
+                    $(e.currentTarget).parent().parent().find('input').val(--v);
+            });
+
+            $('.quantityIncrease').click((e) => {
+                var v = $(e.currentTarget).parent().parent().find('input').val();
+                if (v < 1000)
+                    $(e.currentTarget).parent().parent().find('input').val(++v);
+            });
+        })
+    </script>
 </body>
 </html>
 

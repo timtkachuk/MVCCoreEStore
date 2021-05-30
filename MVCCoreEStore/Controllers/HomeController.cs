@@ -99,9 +99,21 @@ namespace MVCCoreEStore.Controllers
 
         public async Task<IActionResult> AddToCart(AddToCartViewModel model)
         {
-            await shoppingCartService.AddToCart(model.ProductId, model.Quantity);
+            await shoppingCartService.AddToCartAsync(model.ProductId, model.Quantity);
 
             return Redirect("/");
+        }
+
+        public async Task<IActionResult> RemoveFromCart(int id)
+        {
+            await shoppingCartService.RemoveFromCartAsync(id);
+            return RedirectToAction("CheckOut", "Account");
+        }
+
+        public async Task<IActionResult> ClearShoppingCart()
+        {
+            await shoppingCartService.ClearShoppingCartAsync();
+            return RedirectToAction("CheckOut", "Account");
         }
 
         public IActionResult Search(string Keywords)

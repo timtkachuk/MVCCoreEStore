@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace MVCCoreEStore.Services
 {
     public interface IShoppingCartService
     {
-        Task AddToCart(int id, int quantity = 1);
-
-        int ItemCount();
+        Task AddToCartAsync(int id, int quantity = 1);
+        Task RemoveFromCartAsync(int id);
+        Task<int> ItemCountAsync();
+        Task ClearCookieAsync();
+        Task TransferCookieToDatabaseAsync();
+        Task ClearShoppingCartAsync();
     }
 }

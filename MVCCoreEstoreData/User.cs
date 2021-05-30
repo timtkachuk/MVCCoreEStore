@@ -23,10 +23,10 @@ namespace MVCCoreEStoreData
         public DateTime? DateOfBirth { get; set; }
 
         [NotMapped]
-        public decimal ShoppingCartGrandTotal => ShoppingcartItems.Sum(p => p.Amount);
+        public decimal ShoppingCartGrandTotal => ShoppingCartItems.Sum(p => p.Amount);
 
         [NotMapped]
-        public decimal ShoppingCartTotal => ShoppingcartItems.Sum(p => p.Quantity * p.Product.Price);
+        public decimal ShoppingCartTotal => ShoppingCartItems.Sum(p => p.Quantity * p.Product.Price);
 
         [NotMapped]
         public decimal ShoppingCartSavings => ShoppingCartTotal - ShoppingCartGrandTotal;
@@ -38,7 +38,7 @@ namespace MVCCoreEStoreData
         public virtual ICollection<Banner> Banners { get; set; } = new HashSet<Banner>();
         public virtual ICollection<Order> Orders { get; set; } = new HashSet<Order>();
         public virtual ICollection<ProductComment> ProductComments { get; set; } = new HashSet<ProductComment>();
-        public virtual ICollection<ShoppingCartItem> ShoppingcartItems { get; set; } = new HashSet<ShoppingCartItem>();
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new HashSet<ShoppingCartItem>();
 
     }
 }

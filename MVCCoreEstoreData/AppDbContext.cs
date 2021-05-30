@@ -63,7 +63,7 @@ namespace MVCCoreEStoreData
                 .OnDelete(DeleteBehavior.Restrict);
 
                 entity
-                 .HasMany(p => p.ShoppingcartItems)
+                 .HasMany(p => p.ShoppingCartItems)
                  .WithOne(p => p.User)
                  .OnDelete(DeleteBehavior.Restrict);
 
