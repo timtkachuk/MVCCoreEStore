@@ -21,6 +21,7 @@ namespace MVCCoreEStoreData
         public string Name { get; set; }
         public Genders? Gender { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public DateTime Date { get; set; }
 
         [NotMapped]
         public decimal ShoppingCartGrandTotal => ShoppingCartItems.Sum(p => p.Amount);

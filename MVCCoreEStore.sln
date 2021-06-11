@@ -5,11 +5,19 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCCoreEStore", "MVCCoreEStore\MVCCoreEStore.csproj", "{6D7ECCAD-0872-4399-9441-3F7055073164}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationsSqlServer", "MigrationsSqlServer\MigrationsSqlServer.csproj", "{9208ECE8-12D2-48BD-9817-3663A7581DED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationsSqlServer", "MigrationsSqlServer\MigrationsSqlServer.csproj", "{9208ECE8-12D2-48BD-9817-3663A7581DED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationsMySql", "MigrationsMySql\MigrationsMySql.csproj", "{7670AE97-F583-4814-83F8-CE7282877919}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationsMySql", "MigrationsMySql\MigrationsMySql.csproj", "{7670AE97-F583-4814-83F8-CE7282877919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCCoreEstoreData", "MVCCoreEstoreData\MVCCoreEstoreData.csproj", "{8A72514B-D077-4E5A-ADC3-E8AA9B707A2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCCoreEstoreData", "MVCCoreEstoreData\MVCCoreEstoreData.csproj", "{8A72514B-D077-4E5A-ADC3-E8AA9B707A2B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentBase", "PaymentBase\PaymentBase.csproj", "{EB1612E7-A79C-4193-A4FF-AF0628D7EEDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PaymentModules", "PaymentModules", "{4A71AA4A-A767-4959-876D-C917BCAAEED8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IyzicoPaymentModule", "IyzicoPaymentModule\IyzicoPaymentModule.csproj", "{B1C3720D-F48B-4A2C-B6B9-540AFA4B3A49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarantiPaymentModule", "GarantiPaymentModule\GarantiPaymentModule.csproj", "{9F572E3D-3F88-420A-8937-C26ED0B9C7E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +41,25 @@ Global
 		{8A72514B-D077-4E5A-ADC3-E8AA9B707A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A72514B-D077-4E5A-ADC3-E8AA9B707A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A72514B-D077-4E5A-ADC3-E8AA9B707A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB1612E7-A79C-4193-A4FF-AF0628D7EEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB1612E7-A79C-4193-A4FF-AF0628D7EEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB1612E7-A79C-4193-A4FF-AF0628D7EEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB1612E7-A79C-4193-A4FF-AF0628D7EEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1C3720D-F48B-4A2C-B6B9-540AFA4B3A49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C3720D-F48B-4A2C-B6B9-540AFA4B3A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1C3720D-F48B-4A2C-B6B9-540AFA4B3A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1C3720D-F48B-4A2C-B6B9-540AFA4B3A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F572E3D-3F88-420A-8937-C26ED0B9C7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F572E3D-3F88-420A-8937-C26ED0B9C7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F572E3D-3F88-420A-8937-C26ED0B9C7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F572E3D-3F88-420A-8937-C26ED0B9C7E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1C3720D-F48B-4A2C-B6B9-540AFA4B3A49} = {4A71AA4A-A767-4959-876D-C917BCAAEED8}
+		{9F572E3D-3F88-420A-8937-C26ED0B9C7E9} = {4A71AA4A-A767-4959-876D-C917BCAAEED8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1BFEC087-FDF1-413F-A1CC-6E587729E292}

@@ -11,13 +11,24 @@
 }
 else
 {
-    <li class="nav-item">
-        <span class="navbar-text">Hoş geldiniz Sn. @Model.Name</span>
-    </li>
-    <li class="nav-item">
-        <a href="#" class="btn btn-link text-success text-decoration-none">Hesabım</a>
-    </li>
-    <li class="nav-item">
-        <a asp-controller="Account" asp-action="Logout" class="btn btn-link text-success text-decoration-none">Çıkış</a>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user"></i> Hoş geldiniz Sn. @Model.Name
+        </a>
+        <div class="dropdown-menu" aria-labelledby="userDropdown">
+            <a class="dropdown-item" asp-controller="Accound" asp-action="Profile">
+                <i class="fa fa-wrench"></i>
+                Hesabım
+            </a>
+            <a class="dropdown-item" asp-controller="Account" asp-action="Orders" asp-route-state="@OrderStates.New">
+                <i class="fa fa-shopping-bag"></i>
+                Siparişlerim
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
+                <i class="fa fa-power-off"></i>
+                Çıkış
+            </a>
+        </div>
     </li>
 }

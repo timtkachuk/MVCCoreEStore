@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,9 @@ namespace MVCCoreEStoreData
     {
         public OrderStates OrderState { get; set; } = OrderStates.New;
         public string ShippingNumber { get; set; }
+
+        [NotMapped]
+        public decimal GrandTotal => OrderItems.Sum(p => p.Amount);
 
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
 

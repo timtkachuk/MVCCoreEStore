@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+
 namespace MVCCoreEStore.Controllers
 {
     public class HomeController : Controller
@@ -118,6 +119,9 @@ namespace MVCCoreEStore.Controllers
 
         public IActionResult Search(string Keywords)
         {
+            if (string.IsNullOrEmpty(Keywords))
+                return RedirectToAction("Index");
+
             var keywords = Regex.Split(Keywords.ToLower(CultureInfo.CreateSpecificCulture("tr-TR")), @"\s+").ToList();
 
             var model = context.Products.AsEnumerable().Where(p =>
@@ -143,6 +147,16 @@ namespace MVCCoreEStore.Controllers
             await context.SaveChangesAsync();
 
             return RedirectToAction("Product", new { id = model.ProductId });
+        }
+
+        [HttpGet("error/{code}")]
+        public IActionResult Error(int code)
+        {
+            switch (code)
+            {
+                case 404: return View("Error404");
+                default: return View("ErrorUnexpected");
+            }
         }
     }
 }

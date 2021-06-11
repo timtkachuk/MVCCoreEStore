@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCCoreEStore.Services;
 using MVCCoreEStoreData;
+using PaymentBase;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -85,6 +86,7 @@ namespace MVCCoreEStore
 
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddTransient<IMailMessageService, MailMessageService>();
+            services.AddTransient<IPaymentService, PaymentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,12 +105,17 @@ namespace MVCCoreEStore
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseSession();
@@ -163,6 +170,7 @@ namespace MVCCoreEStore
                     Name = Configuration.GetValue<string>("Security:DefaultUser:Name"),
 
                 };
+                user.EmailConfirmed = true;
                 userManager.CreateAsync(user, Configuration.GetValue<string>("Security:DefaultUser:Password")).Wait();
                 userManager.AddToRoleAsync(user, "Administrators").Wait();
             }

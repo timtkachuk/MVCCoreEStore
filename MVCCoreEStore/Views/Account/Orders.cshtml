@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+@foreach (var order in Model)
+{
+    <div class="mb-2 p-2 bg-light">
+        <table class="table bg-white">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-bars"></i></th>
+                    <th>Sipariş No.</th>
+                    <th>Sipariş T.</th>
+                    <th>Durum</th>
+                    <th>Tutar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <button class="btn btn-sm btn-light" data-toggle="collapse" data-target="#detail_@order.Id">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </td>
+                    <td>@order.Id.ToString("00000000")</td>
+                    <td>@order.Date.ToShortDateString()</td>
+                    <td>@order.OrderState</td>
+                    <td>@order.GrandTotal.ToString("c2")</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="detail_@order.Id" class="collapse fade hide pl-5">
+
+            <table class="table table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Görsel</th>
+                        <th>Ürün Adı</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
+                        <th>Tutar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var orderItem in order.OrderItems)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@orderItem.Product.Picture" class="img-thumbnail" />
+                            </td>
+                            <td>
+                                @orderItem.Product.Name
+                                <div class="small">@orderItem.Product.Code</div>
+                            </td>
+                            <td>
+                                @orderItem.Quantity.ToString("n0")
+                            </td>
+                            <td>
+                                @orderItem.Product.DiscountedPrice.ToString("c2")
+                                <div class="small" style="text-decoration: line-through">@orderItem.Product.Price.ToString("c2")</div>
+                            </td>
+                            <td>
+                                @orderItem.Amount.ToString("c2")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

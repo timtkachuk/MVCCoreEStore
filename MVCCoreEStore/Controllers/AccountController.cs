@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MVCCoreEStore.Models;
 using MVCCoreEStore.Services;
 using MVCCoreEStoreData;
+using PaymentBase;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +25,7 @@ namespace MVCCoreEStore.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly AppDbContext context;
         private readonly IShoppingCartService shoppingCartService;
+        private readonly IPaymentService paymentService;
 
         public AccountController(
             SignInManager<User> signInManager,
@@ -29,7 +34,8 @@ namespace MVCCoreEStore.Controllers
             IWebHostEnvironment webHostEnvironment,
             IHttpContextAccessor httpContextAccessor,
             AppDbContext context,
-            IShoppingCartService shoppingCartService
+            IShoppingCartService shoppingCartService,
+            IPaymentService paymentService
             )
         {
             this.signInManager = signInManager;
@@ -39,6 +45,7 @@ namespace MVCCoreEStore.Controllers
             this.httpContextAccessor = httpContextAccessor;
             this.context = context;
             this.shoppingCartService = shoppingCartService;
+            this.paymentService = paymentService;
         }
 
         public IActionResult Login()
@@ -54,7 +61,12 @@ namespace MVCCoreEStore.Controllers
                 return Redirect(model.ReturnUrl ?? "/");
             else
             {
-                ModelState.AddModelError("", "Geçersiz kullanıcı girişi");
+                if (result.IsNotAllowed)
+                    ModelState.AddModelError("", "Doğrulanmamış e-posta..");
+                else if (result.IsLockedOut)
+                    ModelState.AddModelError("", "Çok fazla yanlış parola denemesi.");
+                else
+                    ModelState.AddModelError("", "Geçersiz kullanıcı girişi");
                 return View(model);
             }
         }
@@ -192,6 +204,88 @@ namespace MVCCoreEStore.Controllers
                 return RedirectToAction("CheckOut");
             }
             return View(user);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Payment()
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            ViewData["grandTotal"] = user.ShoppingCartGrandTotal.ToString("c2");
+            ViewData["months"] = new SelectList(Enumerable.Range(1, 12).Select(p => p.ToString("00")));
+            ViewData["years"] = new SelectList(Enumerable.Range(DateTime.Today.Year, 20).Select(p => p.ToString()));
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Payment(PaymentParameters model)
+        {
+            var result = await paymentService.Pay(model);
+            if (!result.Succeded)
+            {
+                ModelState.AddModelError("", result.Error);
+                return View(model);
+            }
+            else
+            {
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
+                var order = new Order
+                {
+                    Date = DateTime.Now,
+                    Enabled = true,
+                    OrderState = OrderStates.New,
+                    UserId = user.Id
+                };
+                user
+                    .ShoppingCartItems
+                    .ToList()
+                    .ForEach(p =>
+                    {
+                        var orderItem = new OrderItem
+                        {
+                            Discount = p.Product.Discount,
+                            Price = p.Product.Price,
+                            ProductId = p.ProductId,
+                            Quantity = p.Quantity
+                        };
+                        context.Entry(orderItem).State = EntityState.Added;
+                        order.OrderItems.Add(orderItem);
+                        context.Entry(p).State = EntityState.Deleted;
+                    });
+
+                context.Entry(order).State = EntityState.Added;
+
+                await context.SaveChangesAsync();
+
+                return View("PaymentSuccess");
+            }
+        }
+
+        [Authorize, HttpGet]
+        public async Task<IActionResult> BinCheck(string binNumber)
+        {
+            var response = await PaymentBase.BinCheck.Request(binNumber);
+            return Json(response);
+        }
+
+        [Authorize]
+        [HttpGet("home/orders/{state}/{startDate?}/{endDate?}")]
+        public async Task<IActionResult> Orders(DateTime? startDate, DateTime? endDate, OrderStates state)
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            //ViewData["newOrders"] = user.Orders.Where(p => p.OrderState == OrderStates.New).OrderBy(p => p.Date).ToList();
+
+            var model = user.Orders
+                .Where(p =>
+                (p.OrderState == state)
+                &&
+                (p.Date >= startDate || startDate == null)
+                &&
+                (p.Date <= endDate || endDate == null))
+                .ToList();
+
+            return View(model);
         }
     }
 }

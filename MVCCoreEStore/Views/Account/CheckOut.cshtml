@@ -9,6 +9,10 @@
         @if (Model.ShoppingCartItems.Any())
         {
             <div class="text-right p-2">
+                <a asp-action="Payment" class="btn btn-success">
+                    <i class="fa fa-shopping-bag"></i>
+                    Ödeme Yap
+                </a>
                 <a asp-controller="Home" asp-action="ClearShoppingCart" class="btn btn-outline-danger">
                     Sepeti Boşalt
                 </a>
